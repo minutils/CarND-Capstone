@@ -4,3 +4,5 @@ build
 devel
 
 profile.tmp
+train_light_detector/training_job/
+train_light_detector/sim_inference_graph.pb/
