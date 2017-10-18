@@ -10,6 +10,7 @@ from light_classification.tl_classifier import TLClassifier
 import tf
 import cv2
 import yaml
+import math
 
 STATE_COUNT_THRESHOLD = 3
 
@@ -101,7 +102,17 @@ class TLDetector(object):
 
         """
         #TODO implement
-        return 0
+        point_index = None
+        min_distance = None
+        for i, waypoint in enumerate(self.base_waypoints):
+            dist = math.sqrt(pow(pos.x-waypoint.pose.pose.position.x,2)+pow(pos.y-waypoint.pose.pose.position.y,2))
+	    if min_distance = None
+		min_distance=dist
+            if dist < min_distance:
+                min_distance = dist
+                point_index = i
+
+	return point_index
 
     def get_light_state(self, light):
         """Determines the current color of the traffic light
@@ -120,6 +131,10 @@ class TLDetector(object):
         cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
 
         #Get classification
+
+	if(self.light_classifier.open_model("/home/lorenzo/Udacity/SelfDrivingCar/Term3/frozen_inference_graph.pb")):
+		rospy.loginfo("Model Opened")	
+	
         return self.light_classifier.get_classification(cv_image)
 
     def process_traffic_lights(self):
