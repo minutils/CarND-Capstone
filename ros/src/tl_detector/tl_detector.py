@@ -137,6 +137,10 @@ class TLDetector(object):
 	
         return self.light_classifier.get_classification(cv_image)
 
+
+    def Fake_classificator():
+	return
+
     def process_traffic_lights(self):
         """Finds closest visible traffic light, if one exists, and determines its
             location and color
