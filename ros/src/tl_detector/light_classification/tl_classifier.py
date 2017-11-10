@@ -20,6 +20,8 @@ min_prob = 0.50
 
 class TLClassifier(object):
     def __init__(self):
+        # assemble frozen_inference_graph_carla.pb from chunks
+        os.system('cat frozen_inference_graph_carla.pb.1 frozen_inference_graph_carla.pb.2 frozen_inference_graph_carla.pb.3 frozen_inference_graph_carla.pb.4 > frozen_inference_graph_carla.pb')
         self.detection_graph = tf.Graph()
         with self.detection_graph.as_default():
             od_graph_def = tf.GraphDef()
