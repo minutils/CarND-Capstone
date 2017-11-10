@@ -145,6 +145,9 @@ class WaypointUpdater(object):
     def waypoints_cb(self, waypoints):
         rospy.loginfo('waypoint_updater: received %d waypoints' % (len(waypoints.waypoints)))
         self.base_waypoints = waypoints.waypoints
+        self.stop_lines = []
+        self.deceleration_points = []
+        self.reference_velocity = []
         # keep a copy of original speed limit for each waypoint
         for i in range(0, len(self.base_waypoints)):
             self.reference_velocity.append(self.base_waypoints[i].twist.twist.linear.x)
@@ -157,12 +160,15 @@ class WaypointUpdater(object):
             self.stop_lines.append(waypoint)
             #print("stop line at %d" % waypoint)
         for waypoint in self.stop_lines:
+            point = 0
             for deceleration_point in range(waypoint, 0, -1):
                 distance = self.distance(self.base_waypoints, deceleration_point, waypoint)
                 #print("distance from %d to %d: %f" % (waypoint, deceleration_point, distance))
                 if distance > 50:
                     self.deceleration_points.append(deceleration_point)
+                    point = deceleration_point
                     break
+            self.deceleration_points.append(point)
 
 
     def traffic_cb(self, msg):
